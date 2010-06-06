@@ -29,16 +29,14 @@ module RubyMorph
             Gosu::Color::GREEN,
             Gosu::Color::WHITE]
 
+  TEXT_SIZE = 14
+  TEXT_MARGIN = 5
   DEFAULT_COLOR = Gosu::Color::RED
 
   # The main application class, subclasses Gosu::Window, initialises everything
   # and handles events and drawing.
   #
   class RubyMorph < Gosu::Window
-
-    TEXT_SIZE = 14
-    TEXT_MARGIN = 5
-
     def initialize
       super(WIDTH, HEIGHT, false, 20)
       self.caption = "RubyMorph | Biomorphs in the land of Ruby / Gosu"
@@ -81,7 +79,7 @@ module RubyMorph
       draw_tree(*panel.tree_opts)
       if panel.below?(mouse_x, mouse_y)
         draw_quad(*panel.quad_opts)
-        @font.draw(panel.gene, panel.x + TEXT_MARGIN, panel.y + panel.height - TEXT_SIZE - TEXT_MARGIN, 10)
+        @font.draw(*panel.info_opts)
       end
     end
 
@@ -177,6 +175,10 @@ module RubyMorph
     # Used in draw_tree
     def tree_opts
       [@x + (@width / 2), @y + (@height / 2)] + @gene.options
+    end
+
+    def info_opts
+      [@gene, @x + TEXT_MARGIN, @y + @height - TEXT_SIZE - TEXT_MARGIN, 10]
     end
   end
 
