@@ -24,6 +24,14 @@ module RubyMorph
   ScreenWidth = 1220
   ScreenHeight = 660
 
+  COLORS = [Gosu::Color::WHITE,
+            Gosu::Color::YELLOW,
+            Gosu::Color::BLUE,
+            Gosu::Color::GREEN,
+            Gosu::Color::WHITE]
+
+  DEFAULT_COLOR = Gosu::Color::RED
+
   # The main application class, subclasses Gosu::Window, initialises everything
   # and handles events and drawing.
   #
@@ -122,15 +130,7 @@ module RubyMorph
     # returns a Gosu::Color for a given length
     # @todo encode colour as genes
     def branch_colour(length)
-      case length
-      when 0 then Gosu::Color::WHITE
-      when 1 then Gosu::Color::YELLOW
-      when 2 then Gosu::Color::BLUE
-      when 3 then Gosu::Color::GREEN
-      when 4 then Gosu::Color::WHITE
-      else
-        Gosu::Color::RED
-      end
+      COLORS.fetch(length) { DEFAULT_COLOR }
     end
   end
 
