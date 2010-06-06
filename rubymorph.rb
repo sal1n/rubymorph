@@ -21,9 +21,8 @@ require 'yaml'
 
 module RubyMorph
 
-  ScreenWidth = 1220
-  ScreenHeight = 660
-
+  WIDTH  = 1220
+  HEIGHT = 660
   COLORS = [Gosu::Color::WHITE,
             Gosu::Color::YELLOW,
             Gosu::Color::BLUE,
@@ -40,15 +39,10 @@ module RubyMorph
     TEXT_SIZE = 14
     TEXT_MARGIN = 5
 
-
     def initialize
-      super(ScreenWidth, ScreenHeight, false, 20)
+      super(WIDTH, HEIGHT, false, 20)
       self.caption = "RubyMorph | Biomorphs in the land of Ruby / Gosu"
-
-      # load cursor image
       @cursor = Gosu::Image.new(self, "cursor.png")
-
-      # Gosu default font
       @font = Gosu::Font.new(self, Gosu.default_font_name, TEXT_SIZE)
       
       # initial selection from default parent gene
@@ -59,8 +53,8 @@ module RubyMorph
     def select(parent)
       x = 0
       y = 0
-      width = ScreenWidth / 4
-      height = ScreenHeight / 3
+      width = WIDTH / 4
+      height = HEIGHT / 3
       genes = parent.reproduce(11)
 
       @panels = Array.new
@@ -75,12 +69,8 @@ module RubyMorph
       end
     end
 
-    # gosu draw
     def draw
-      # draw the cursor
       @cursor.draw(mouse_x, mouse_y, 5.0, 0.75,0.75)
-
-      # draw each canvas
       @panels.each do |canvas|
         render(canvas)
       end
@@ -203,6 +193,7 @@ module RubyMorph
       self[10]
     end
 
+    # Used in draw_tree
     def options
       [length, direction, dx, dy]
     end
