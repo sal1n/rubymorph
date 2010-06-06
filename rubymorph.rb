@@ -64,7 +64,7 @@ module RubyMorph
           y += height
         end
 
-       @panels << Panel.new(self, x, y, width, height, genes[i])
+       @panels << Panel.new(x, y, width, height, genes[i])
       end
     end
 
@@ -74,9 +74,14 @@ module RubyMorph
       @cursor.draw(self.mouse_x, self.mouse_y, 5.0, 0.75,0.75)
 
       # draw each canvas
-      @panels.each do |panel|
-        panel.draw
+      @panels.each do |canvas|
+        render(canvas)
       end
+    end
+
+    def render(panel)
+      draw_box(*panel.box_opts)
+      draw_tree(*panel.tree_opts)
     end
 
     # recursive tree drawing method
@@ -137,10 +142,11 @@ module RubyMorph
   # A panel which displays a given gene.
   #
   class Panel
+    BOX_COLOR = Gosu::Color::GRAY
+
     attr_accessor :gene
 
-    def initialize(window, x, y, width, height, gene)
-      @window = window
+    def initialize(x, y, width, height, gene)
       @x      = x
       @y      = y
       @width  = width
@@ -152,9 +158,14 @@ module RubyMorph
       x >= @x && x <= @x + @width and y >= @y && y <= @y + @height
     end
 
-    def draw
-      @window.draw_box(@x, @y, @width, @height, Gosu::Color::GRAY, 1.0)
-      @window.draw_tree(@x + (@width / 2), @y + (@height / 2), @gene.length, @gene.direction, @gene.dx, @gene.dy)
+    # Used in draw_box
+    def box_opts
+      [@x, @y, @width, @height, BOX_COLOR, 1.0]
+    end
+
+    # Used in draw_tree
+    def tree_opts
+      [@x + (@width / 2), @y + (@height / 2)] + @gene.options
     end
   end
 
@@ -174,6 +185,10 @@ module RubyMorph
 
     def direction
       self[10]
+    end
+
+    def options
+      [length, direction, dx, dy]
     end
 
     # drawing x deltas
