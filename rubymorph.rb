@@ -77,6 +77,7 @@ module RubyMorph
     def render(panel)
       draw_box(*panel.box_opts)
       draw_tree(*panel.tree_opts)
+
       if panel.below?(mouse_x, mouse_y)
         draw_quad(*panel.quad_opts)
         @font.draw(*panel.info_opts)
@@ -93,8 +94,9 @@ module RubyMorph
 
       xnew = x + (length * dx[dir])
       ynew = y - (length * dy[dir])
+      color = branch_color(length)
 
-      draw_line(x, y, branch_color(length), xnew, ynew, branch_color(length), 1.0)
+      draw_line(x, y, color, xnew, ynew, color, 1.0)
 
       # recurse
       if length > 0
