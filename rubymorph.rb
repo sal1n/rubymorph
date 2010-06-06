@@ -261,7 +261,6 @@ module RubyMorph
 end
 
 if $0 == __FILE__
-  rubymorph = RubyMorph::RubyMorph.new
-  rubymorph.show
+  RubyMorph::RubyMorph.new.show
   puts("I for one welcome our new biomorphic overlords...thanks and goodbye!")
 end
