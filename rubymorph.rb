@@ -35,9 +35,6 @@ module RubyMorph
        
       # load cursor image
       @cursor = Gosu::Image.new(self, "cursor.png")
-
-      # initialise a counter to append to our save files
-      @save_suffix = 1
       
       # initial selection from default parent gene
       self.select(Gene.new)          
@@ -104,11 +101,14 @@ module RubyMorph
       @panels.detect {|panel| panel.below?(mouse_x, mouse_y) }
     end
 
+    def file_label
+      Time.now.strftime('gene_%Y%m%d_%H%M%S.yaml')
+    end
+
     def save gene
-      File.open("rubymorph-#{@save_suffix}.yaml", "w") do |file|
+      File.open(file_label, "w") do |file|
         YAML.dump(gene.to_yaml, file)
       end
-      @save_suffix += 1
     end
 
     # draws a box on screen
