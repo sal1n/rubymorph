@@ -1,5 +1,5 @@
 # RubyMorph.rb - Biomorphs in the land of Ruby / Gosu.
-# 
+#
 # 2010 Steve Andrews [steve[at]salin[dot]org]
 #
 # @todo
@@ -10,7 +10,7 @@
 # 5.  Implement branch thickness.
 
 begin
-  # in case you use Gosu via RubyGems  
+  # in case you use Gosu via RubyGems
   require 'rubygems'
 rescue
   # in case you don't
@@ -20,34 +20,34 @@ require 'gosu'
 require 'yaml'
 
 module RubyMorph
-   
+
   ScreenWidth = 1220
-  ScreenHeight = 660 
-    
+  ScreenHeight = 660
+
   # The main application class, subclasses Gosu::Window, initialises everything
   # and handles events and drawing.
   #
   class RubyMorph < Gosu::Window
-   
-    def initialize      
+
+    def initialize
       super(ScreenWidth, ScreenHeight, false, 20)
       self.caption = "RubyMorph | Biomorphs in the land of Ruby / Gosu"
-       
+
       # load cursor image
       @cursor = Gosu::Image.new(self, "cursor.png")
-      
+
       # initial selection from default parent gene
-      self.select(Gene.new)          
+      self.select(Gene.new)
     end
-    
+
     # from a given selected parent, reproduce and redisplay
-    def select(parent)     
+    def select(parent)
       x = 0
       y = 0
       width = ScreenWidth / 4
-      height = ScreenHeight / 3      
+      height = ScreenHeight / 3
       genes = parent.reproduce(11)
-      
+
       @panels = Array.new
       12.times do |i|
         x = width * (i % 4)
@@ -55,22 +55,22 @@ module RubyMorph
           x = 0
           y += height
         end
-        
+
        @panels << Panel.new(self, x, y, width, height, genes[i])
-      end      
+      end
     end
-    
+
     # gosu draw
     def draw
       # draw the cursor
       @cursor.draw(self.mouse_x, self.mouse_y, 5.0, 0.75,0.75)
-       
+
       # draw each canvas
       @panels.each do |panel|
         panel.draw
-      end       
+      end
     end
-    
+
     # recursive tree drawing method
     def draw_tree(x, y, length, dir, dx, dy)
       if dir < 0
@@ -81,16 +81,16 @@ module RubyMorph
 
       xnew = x + (length * dx[dir])
       ynew = y - (length * dy[dir])
-      
+
       self.draw_line(x, y, branch_colour(length), xnew, ynew, branch_colour(length), 1.0)
-  
+
       # recurse
       if length > 0
         self.draw_tree(xnew, ynew, length - 1, dir - 1, dx, dy)
         self.draw_tree(xnew, ynew, length - 1, dir + 1, dx, dy)
       end
     end
-    
+
     def button_down(id)
       select(panel.gene) if id == Gosu::MsLeft || id == Gosu::MsRight
       save(panel.gene)   if id == Gosu::KbS
@@ -133,12 +133,12 @@ module RubyMorph
       end
     end
   end
-  
+
   # A panel which displays a given gene.
   #
-  class Panel    
+  class Panel
     attr_accessor :gene
-    
+
     def initialize(window, x, y, width, height, gene)
       @window = window
       @x      = x
@@ -151,14 +151,14 @@ module RubyMorph
     def below?(x, y)
       x >= @x && x <= @x + @width and y >= @y && y <= @y + @height
     end
-    
+
     def draw
       @window.draw_box(@x, @y, @width, @height, Gosu::Color::GRAY, 1.0)
       @window.draw_tree(@x + (@width / 2), @y + (@height / 2), @gene.length, @gene.direction, @gene.dx, @gene.dy)
     end
-  end  
+  end
 
-  class Gene < Array  
+  class Gene < Array
     def initialize
       # default parent initial genes
       9.times do |i|
@@ -167,15 +167,15 @@ module RubyMorph
       self[9] = 4  # length
       self[10] = 6 # direction
     end
-    
+
     def length
       self[9]
     end
-    
+
     def direction
       self[10]
     end
-    
+
     # drawing x deltas
     def dx
       dx = Array.new(8)
@@ -189,7 +189,7 @@ module RubyMorph
       dx[6] = 0
       dx
     end
-  
+
     # drawing y deltas
     def dy
       dy = Array.new(8)
@@ -203,7 +203,7 @@ module RubyMorph
       dy[7] = dy[5]
       dy
     end
-    
+
     # mutate a given gene
     # @todo investigate the mutation rates
     def mutate(gene)
@@ -218,7 +218,7 @@ module RubyMorph
         self[gene] += -10 + rand(20)
       end
     end
-    
+
     # asexually reproduce a given amount of times, note that the parent
     # is preserved in the children array
     def reproduce(amount)
@@ -230,7 +230,7 @@ module RubyMorph
         children << child
       end
       children
-    end    
+    end
   end
 end
 
