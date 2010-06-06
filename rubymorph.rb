@@ -95,7 +95,7 @@ module RubyMorph
       xnew = x + (length * dx[dir])
       ynew = y - (length * dy[dir])
 
-      self.draw_line(x, y, branch_colour(length), xnew, ynew, branch_colour(length), 1.0)
+      self.draw_line(x, y, branch_color(length), xnew, ynew, branch_color(length), 1.0)
 
       # recurse
       if length > 0
@@ -125,16 +125,16 @@ module RubyMorph
     end
 
     # draws a box on screen
-    def draw_box(x, y, width, height, colour, z = 0.0)
-      self.draw_line(x, y, colour, x + width, y, colour, z)
-      self.draw_line(x + width, y, colour, x + width, y + height, colour, z)
-      self.draw_line(x, y, colour, x, y + height, colour, z)
-      self.draw_line(x, y + height, colour, x + width, y + height, colour, z)
+    def draw_box(x, y, width, height, color, z = 0.0)
+      self.draw_line(x, y, color, x + width, y, color, z)
+      self.draw_line(x + width, y, color, x + width, y + height, color, z)
+      self.draw_line(x, y, color, x, y + height, color, z)
+      self.draw_line(x, y + height, color, x + width, y + height, color, z)
     end
 
     # returns a Gosu::Color for a given length
-    # @todo encode colour as genes
-    def branch_colour(length)
+    # @todo encode color as genes
+    def branch_color(length)
       COLORS.fetch(length) { DEFAULT_COLOR }
     end
   end
