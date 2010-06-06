@@ -101,7 +101,7 @@ module RubyMorph
     end
 
     def panel
-      @panels.detect {|panel| panel.clicked?(mouse_x, mouse_y) }
+      @panels.detect {|panel| panel.below?(mouse_x, mouse_y) }
     end
 
     def save gene
@@ -148,7 +148,7 @@ module RubyMorph
       @gene   = gene
     end
 
-    def clicked?(x, y)
+    def below?(x, y)
       x >= @x && x <= @x + @width and y >= @y && y <= @y + @height
     end
     
