@@ -52,7 +52,7 @@ module RubyMorph
       @font = Gosu::Font.new(self, Gosu.default_font_name, TEXT_SIZE)
       
       # initial selection from default parent gene
-      self.select(Gene.new)
+      select(Gene.new)
     end
 
     # from a given selected parent, reproduce and redisplay
@@ -78,7 +78,7 @@ module RubyMorph
     # gosu draw
     def draw
       # draw the cursor
-      @cursor.draw(self.mouse_x, self.mouse_y, 5.0, 0.75,0.75)
+      @cursor.draw(mouse_x, mouse_y, 5.0, 0.75,0.75)
 
       # draw each canvas
       @panels.each do |canvas|
@@ -106,12 +106,12 @@ module RubyMorph
       xnew = x + (length * dx[dir])
       ynew = y - (length * dy[dir])
 
-      self.draw_line(x, y, branch_color(length), xnew, ynew, branch_color(length), 1.0)
+      draw_line(x, y, branch_color(length), xnew, ynew, branch_color(length), 1.0)
 
       # recurse
       if length > 0
-        self.draw_tree(xnew, ynew, length - 1, dir - 1, dx, dy)
-        self.draw_tree(xnew, ynew, length - 1, dir + 1, dx, dy)
+        draw_tree(xnew, ynew, length - 1, dir - 1, dx, dy)
+        draw_tree(xnew, ynew, length - 1, dir + 1, dx, dy)
       end
     end
 
@@ -137,10 +137,10 @@ module RubyMorph
 
     # draws a box on screen
     def draw_box(x, y, width, height, color, z = 0.0)
-      self.draw_line(x, y, color, x + width, y, color, z)
-      self.draw_line(x + width, y, color, x + width, y + height, color, z)
-      self.draw_line(x, y, color, x, y + height, color, z)
-      self.draw_line(x, y + height, color, x + width, y + height, color, z)
+      draw_line(x, y, color, x + width, y, color, z)
+      draw_line(x + width, y, color, x + width, y + height, color, z)
+      draw_line(x, y, color, x, y + height, color, z)
+      draw_line(x, y + height, color, x + width, y + height, color, z)
     end
 
     # returns a Gosu::Color for a given length
