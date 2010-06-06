@@ -37,6 +37,10 @@ module RubyMorph
   #
   class RubyMorph < Gosu::Window
 
+    TEXT_SIZE = 14
+    TEXT_MARGIN = 5
+
+
     def initialize
       super(ScreenWidth, ScreenHeight, false, 20)
       self.caption = "RubyMorph | Biomorphs in the land of Ruby / Gosu"
@@ -45,7 +49,7 @@ module RubyMorph
       @cursor = Gosu::Image.new(self, "cursor.png")
 
       # Gosu default font
-      @font = Gosu::Font.new(self, Gosu.default_font_name, 14)
+      @font = Gosu::Font.new(self, Gosu.default_font_name, TEXT_SIZE)
       
       # initial selection from default parent gene
       self.select(Gene.new)
@@ -85,7 +89,10 @@ module RubyMorph
     def render(panel)
       draw_box(*panel.box_opts)
       draw_tree(*panel.tree_opts)
-      @font.draw(panel.gene, panel.x + 10, panel.y + 10, 10)
+      if panel.below?(mouse_x, mouse_y)
+        draw_quad(*panel.quad_opts)
+        @font.draw(panel.gene, panel.x + TEXT_MARGIN, panel.y + panel.height - TEXT_SIZE - TEXT_MARGIN, 10)
+      end
     end
 
     # recursive tree drawing method
@@ -147,8 +154,9 @@ module RubyMorph
   #
   class Panel
     BOX_COLOR = Gosu::Color::GRAY
+    QUAD_COLOR = Gosu::Color::GRAY
 
-    attr_reader :x, :y
+    attr_reader :x, :y, :width, :height
     attr_accessor :gene
 
     def initialize(x, y, width, height, gene)
@@ -162,6 +170,14 @@ module RubyMorph
     def below?(x, y)
       x >= @x && x <= @x + @width and y >= @y && y <= @y + @height
     end
+
+    # Used in draw_quad
+    def quad_opts
+      [@x, @y, QUAD_COLOR,
+       @x + @width, @y, QUAD_COLOR,
+       @x + @width, @y + @height, QUAD_COLOR,
+       @x, @y + @height, QUAD_COLOR]
+     end
 
     # Used in draw_box
     def box_opts
