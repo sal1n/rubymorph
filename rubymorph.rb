@@ -44,6 +44,9 @@ module RubyMorph
       # load cursor image
       @cursor = Gosu::Image.new(self, "cursor.png")
 
+      # Gosu default font
+      @font = Gosu::Font.new(self, Gosu.default_font_name, 14)
+      
       # initial selection from default parent gene
       self.select(Gene.new)
     end
@@ -82,6 +85,7 @@ module RubyMorph
     def render(panel)
       draw_box(*panel.box_opts)
       draw_tree(*panel.tree_opts)
+      @font.draw(panel.gene, panel.x + 10, panel.y + 10, 10)
     end
 
     # recursive tree drawing method
@@ -144,6 +148,7 @@ module RubyMorph
   class Panel
     BOX_COLOR = Gosu::Color::GRAY
 
+    attr_reader :x, :y
     attr_accessor :gene
 
     def initialize(x, y, width, height, gene)
@@ -171,12 +176,7 @@ module RubyMorph
 
   class Gene < Array
     def initialize
-      # default parent initial genes
-      9.times do |i|
-        self[i] = 5
-      end
-      self[9] = 4  # length
-      self[10] = 6 # direction
+      self[0..10] = [5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 6]
     end
 
     def length
