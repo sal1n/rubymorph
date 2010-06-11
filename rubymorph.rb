@@ -1,6 +1,9 @@
 # RubyMorph.rb - Biomorphs in the land of Ruby / Gosu.
 #
 # 2010 Steve Andrews [steve[at]salin[dot]org]
+# 
+# @changes
+# 1.  Included changes from apillet, thank you!
 #
 # @todo
 # 1.  Implement load functionality for saved RubyMorphs.
@@ -23,15 +26,15 @@ module RubyMorph
 
   WIDTH  = 1220
   HEIGHT = 660
-  COLORS = [Gosu::Color::WHITE,
-            Gosu::Color::YELLOW,
-            Gosu::Color::BLUE,
-            Gosu::Color::GREEN,
-            Gosu::Color::WHITE]
+  COLORS = [Gosu::Color.new(0xffffffff),
+            Gosu::Color.new(0xffffff00),
+            Gosu::Color.new(0xff0000ff),
+            Gosu::Color.new(0xff00ff00),
+            Gosu::Color.new(0xffffffff)]
 
   TEXT_SIZE = 14
   TEXT_MARGIN = 5
-  DEFAULT_COLOR = Gosu::Color::RED
+  DEFAULT_COLOR = Gosu::Color.new(0xffff0000)
 
   # The main application class, subclasses Gosu::Window, initialises everything
   # and handles events and drawing.
@@ -143,8 +146,8 @@ module RubyMorph
   # A panel which displays a given gene.
   #
   class Panel
-    BOX_COLOR = Gosu::Color::GRAY
-    QUAD_COLOR = Gosu::Color::GRAY
+    BOX_COLOR = Gosu::Color.new(0xff808080)
+    QUAD_COLOR = Gosu::Color.new(0xff808080)
 
     attr_reader :x, :y, :width, :height
     attr_accessor :gene
